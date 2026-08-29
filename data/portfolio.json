@@ -1,0 +1,169 @@
+{
+  "profile": {
+    "name": "Maria Petrova",
+    "title": "Secondary Mathematics Teacher",
+    "school": "Sofia High School of Mathematics",
+    "location": "Sofia, Bulgaria",
+    "email": "maria.petrova@example.com",
+    "phone": "",
+    "website": "",
+    "photo": "images/profile.jpg",
+    "tagline": "Making abstract mathematics concrete for every learner.",
+    "summary": "Twelve years of classroom experience in secondary mathematics, with a focus on inquiry-based learning and supporting students who arrive believing they are “not maths people”. National olympiad coach and author of an open-licensed problem set used in 40+ schools.",
+    "languages": [
+      "Bulgarian (native)",
+      "English (C1)",
+      "German (B1)"
+    ],
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://linkedin.com/in/example"
+      },
+      {
+        "label": "Google Scholar",
+        "url": ""
+      }
+    ]
+  },
+  "stats": [
+    {
+      "value": "12",
+      "label": "Years teaching"
+    },
+    {
+      "value": "900+",
+      "label": "Students taught"
+    },
+    {
+      "value": "14",
+      "label": "Olympiad medalists coached"
+    },
+    {
+      "value": "6",
+      "label": "Curricula authored"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Head of Mathematics Department",
+      "org": "Sofia High School of Mathematics",
+      "location": "Sofia",
+      "start": "2020",
+      "end": "Present",
+      "bullets": [
+        "Lead a team of nine teachers; redesigned the grades 8-10 curriculum around problem-based units.",
+        "Raised the share of students achieving the top matriculation band from 31% to 48% over three years.",
+        "Introduced a weekly peer-observation cycle now adopted school-wide."
+      ]
+    },
+    {
+      "role": "Mathematics Teacher",
+      "org": "First English Language School",
+      "location": "Sofia",
+      "start": "2014",
+      "end": "2020",
+      "bullets": [
+        "Taught IB Mathematics HL/SL and national curriculum grades 9-12.",
+        "Founded the school's olympiad club, growing it from 6 to 45 participants."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "MSc, Mathematics Education",
+      "institution": "Sofia University St. Kliment Ohridski",
+      "year": "2014",
+      "notes": "Thesis on misconception patterns in early algebra."
+    },
+    {
+      "degree": "BSc, Mathematics",
+      "institution": "Sofia University St. Kliment Ohridski",
+      "year": "2012",
+      "notes": ""
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Cambridge International Diploma for Teachers",
+      "issuer": "Cambridge Assessment",
+      "year": "2019",
+      "url": ""
+    },
+    {
+      "name": "Google Certified Educator, Level 2",
+      "issuer": "Google for Education",
+      "year": "2021",
+      "url": ""
+    }
+  ],
+  "skills": [
+    {
+      "group": "Teaching",
+      "items": [
+        "Inquiry-based learning",
+        "Differentiated instruction",
+        "Formative assessment",
+        "Olympiad coaching"
+      ]
+    },
+    {
+      "group": "Curriculum",
+      "items": [
+        "Unit design",
+        "Rubric writing",
+        "IB & national curriculum alignment"
+      ]
+    },
+    {
+      "group": "Tools",
+      "items": [
+        "GeoGebra",
+        "Desmos",
+        "Google Classroom",
+        "LaTeX"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "title": "Curriculum Vitae",
+      "description": "Full CV, updated August 2026.",
+      "file": "docs/cv.pdf",
+      "type": "PDF"
+    },
+    {
+      "title": "Sample Unit Plan - Quadratics Through Modelling",
+      "description": "Six-lesson unit with assessment rubric.",
+      "file": "docs/unit-plan-quadratics.pdf",
+      "type": "PDF"
+    },
+    {
+      "title": "Teaching Philosophy Statement",
+      "description": "One page on how I think about the classroom.",
+      "file": "docs/teaching-philosophy.pdf",
+      "type": "PDF"
+    }
+  ],
+  "gallery": [
+    {
+      "src": "images/classroom-1.svg",
+      "caption": "Grade 9 modelling project presentations, 2025"
+    },
+    {
+      "src": "images/olympiad.svg",
+      "caption": "National olympiad training camp"
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "Maria rebuilt our department's culture around evidence rather than habit. The results speak for themselves.",
+      "author": "Dr. Ivan Georgiev",
+      "role": "Principal, Sofia High School of Mathematics"
+    }
+  ],
+  "settings": {
+    "accent": "#1f5c4c",
+    "footerNote": "Built with a static site on GitHub Pages."
+  }
+}

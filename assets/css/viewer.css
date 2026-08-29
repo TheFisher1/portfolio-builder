@@ -1,22 +1,22 @@
 /* ============================================================
    "Exercise book" — the visual language of a teacher's own
-   materials: ruled paper, a red margin line, marginalia, and
-   photographs taped in. Dark mode is the chalkboard.
+   materials: ruled paper, a burgundy margin line, marginalia, and
+   photographs taped in. Dark mode is the board at the front.
    ============================================================ */
 
 :root {
-  --paper:      #fdfbf5;
-  --paper-2:    #f6f2e8;
+  --paper:      #fbf7f2;
+  --paper-2:    #f3ece4;
   --card:       #ffffff;
-  --ink:        #1e1c17;
-  --ink-soft:   #6b6558;
-  --rule:       #e6dfcd;          /* faint horizontal ruling   */
-  --margin:     #c2553f;          /* the red margin line       */
-  --accent:     var(--user-accent, #1f5c4c);  /* pine green, for links */
-  --marker:     #f6dd7d;          /* highlighter pen           */
+  --ink:        #211a1e;
+  --ink-soft:   #6b5f63;
+  --rule:       #e6dcd2;          /* faint horizontal ruling   */
+  --margin:     #7d2f42;          /* the burgundy margin line  */
+  --accent:     var(--user-accent, #4a5240);  /* olive, for links */
+  --marker:     #f2dca0;          /* highlighter pen           */
   --marker-mix: multiply;
-  --tape:       rgba(214, 199, 160, .55);
-  --shadow:     0 1px 1px rgba(30, 28, 23, .05), 0 10px 30px rgba(30, 28, 23, .07);
+  --tape:       rgba(206, 186, 168, .55);
+  --shadow:     0 1px 1px rgba(33, 26, 30, .05), 0 10px 30px rgba(33, 26, 30, .08);
   --maxw: 1000px;
   --gutter: 104px;   /* text starts right of the margin line */
   --rulex: 44px;     /* where the margin line sits inside the sheet */
@@ -26,15 +26,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:    #191d1b;
-    --paper-2:  #141816;
-    --card:     #1f2422;
-    --ink:      #ece7dc;
-    --ink-soft: #9c9b90;
-    --rule:     #2c3431;
-    --margin:   #d4715c;
-    --accent:   #7fc4ac;
-    --marker:   #6b6132;
+    --paper:    #1c161a;
+    --paper-2:  #171216;
+    --card:     #241d22;
+    --ink:      #ece4e6;
+    --ink-soft: #a1949a;
+    --rule:     #33272e;
+    --margin:   #c96b80;
+    --accent:   #9db08c;
+    --marker:   #6b5a32;
     --marker-mix: screen;
     --tape:     rgba(255, 255, 255, .08);
     --shadow:   0 1px 1px rgba(0, 0, 0, .4), 0 12px 34px rgba(0, 0, 0, .35);
@@ -42,15 +42,15 @@
 }
 
 [data-theme="dark"] {
-  --paper:    #191d1b;
-  --paper-2:  #141816;
-  --card:     #1f2422;
-  --ink:      #ece7dc;
-  --ink-soft: #9c9b90;
-  --rule:     #2c3431;
-  --margin:   #d4715c;
-  --accent:   #7fc4ac;
-  --marker:   #6b6132;
+  --paper:    #1c161a;
+  --paper-2:  #171216;
+  --card:     #241d22;
+  --ink:      #ece4e6;
+  --ink-soft: #a1949a;
+  --rule:     #33272e;
+  --margin:   #c96b80;
+  --accent:   #9db08c;
+  --marker:   #6b5a32;
   --marker-mix: screen;
   --tape:     rgba(255, 255, 255, .08);
   --shadow:   0 1px 1px rgba(0, 0, 0, .4), 0 12px 34px rgba(0, 0, 0, .35);
@@ -405,13 +405,13 @@ body.view-deck #portfolio, body.view-deck .topbar { display: none; }
   background:
     radial-gradient(120% 90% at 20% 15%, rgba(255,255,255,.055), transparent 60%),
     radial-gradient(90% 70% at 85% 90%, rgba(255,255,255,.04), transparent 55%),
-    #22302b;
-  color: #f3efe2;
+    #2b1f2a;
+  color: #f4eef0;
   padding: 92px 104px;
   justify-content: center;
 }
 .slide.cover::before {
-  content: ""; inset: 34px; border: 1px solid rgba(243, 239, 226, .22);
+  content: ""; inset: 34px; border: 1px solid rgba(244, 238, 240, .22);
   background-image: none; opacity: 1;
 }
 .slide.cover::after { display: none; }
@@ -419,14 +419,14 @@ body.view-deck #portfolio, body.view-deck .topbar { display: none; }
 .slide.cover .role {
   font-family: var(--sans); font-size: 16px; font-weight: 600;
   letter-spacing: .22em; text-transform: uppercase;
-  color: #d8a08c; margin-top: 22px;
+  color: #d9a2b0; margin-top: 22px;
 }
-.slide.cover .meta { font-size: 20px; color: rgba(243, 239, 226, .66); margin-top: 8px; }
+.slide.cover .meta { font-size: 20px; color: rgba(244, 238, 240, .66); margin-top: 8px; }
 .slide.cover .rule {
   width: 128px; height: 2px; margin: 34px 0;
-  background: rgba(243, 239, 226, .5);
+  background: rgba(244, 238, 240, .5);
 }
-.slide.cover .tagline { font-size: 27px; font-style: italic; color: rgba(243, 239, 226, .82); max-width: 30ch; }
+.slide.cover .tagline { font-size: 27px; font-style: italic; color: rgba(244, 238, 240, .82); max-width: 30ch; }
 
 /* ---------- image slide ---------- */
 .slide.split { flex-direction: row; align-items: center; gap: 64px; }

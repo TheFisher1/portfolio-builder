@@ -1,4 +1,4 @@
-# Teaching Portfolio Builder
+# Portfolio Builder
 
 Enter your details, drop in your photos and documents, download a finished portfolio.
 **One HTML file** holds the portfolio page, a 16:9 slide deck and every image inside it.

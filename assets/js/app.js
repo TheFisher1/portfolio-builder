@@ -448,6 +448,27 @@
     btn.disabled = false; btn.textContent = '⤓ Download portfolio';
   });
 
+  // Google Slides imports .pptx and nothing else useful, so that is what we hand it.
+  $('#pptx').addEventListener('click', async () => {
+    const btn = $('#pptx');
+    const label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Building…';
+    try {
+      const filled = await window.Media.inline(data);
+      const blob = await window.Pptx.build(filled);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = slug((data.profile || {}).name) + '-portfolio.pptx';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      toast('Downloaded ' + window.Media.humanBytes(blob.size)
+        + ' — upload it to Drive and open it with Google Slides');
+    } catch (err) {
+      toast('Could not build the .pptx: ' + err.message);
+    }
+    btn.disabled = false; btn.textContent = label;
+  });
+
   // Reopening an exported file: its data rides along in a <script type="application/json">.
   $('#open').addEventListener('change', async e => {
     const file = e.target.files[0];

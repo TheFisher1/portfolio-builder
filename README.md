@@ -46,7 +46,22 @@ change; everything else is the teacher's own text, in whatever language they wro
   `f` for fullscreen, `Esc` to come back.
 - **PDF** — the print button. The portfolio prints as a portrait document; the deck prints one
   landscape page per slide. Both go to *Save as PDF* in the print dialog.
-- **Theme** — light or the chalkboard dark, remembered per reader.
+- **Theme** — light or dark, remembered per reader.
+
+## Google Slides
+
+**⤤ Slides (.pptx)** in the builder writes a PowerPoint file. Upload it to Drive and open it with
+Google Slides, or use *File → Import slides*. It opens in PowerPoint and Keynote too.
+
+Google Slides imports no other format that is any use here — there is no HTML import, and the outline
+import people remember is a Google Docs feature, not a Slides one. So .pptx it is.
+
+The .pptx carries the same slides from the same model as the HTML deck, but it is a rebuild rather than
+a screenshot: real text boxes and images on a 16:9 canvas, in Georgia and Arial because those exist
+everywhere. The ruled paper does not survive the trip. That is the trade for slides someone can edit.
+
+PptxGenJS (MIT) is vendored in `vendor/` and loaded only when the button is pressed — no CDN, so the
+builder still works offline.
 
 ## The design
 
@@ -79,6 +94,8 @@ assets/js/render.js     data -> portfolio and slide markup, and the standalone d
 assets/js/viewer.js     the script that ships inside every exported file
 assets/css/app.css      the builder's chrome
 assets/css/viewer.css   the portfolio and deck design, inlined into exports
+assets/js/pptx.js       the .pptx export for Google Slides
+vendor/                 PptxGenJS, vendored (MIT)
 serve.py                local preview server, run with uv
 data/example.json       the worked example behind "Load example"
 data/example-files/     placeholder photos and PDFs the example pulls in

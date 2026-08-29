@@ -226,89 +226,115 @@
       </div>`
   };
 
-  function slides(data) {
-    const p = data.profile || {}, L = labels(data), out = [], outline = [];
-    const add = (html, title, bullets) => {
-      out.push(html);
-      outline.push(title + (bullets && bullets.length ? '\n' + bullets.map(b => '\t' + b).join('\n') : ''));
-    };
-    // One slide per item for the lists a portfolio is assessed on; a single
-    // summary slide where a list is just a list.
-    const listSlide = (kicker, title, rows) => {
-      if (rows.length) add(S.bullets(kicker, title, '', rows), title, rows);
-    };
+  /* The deck as data. Both renderers below consume this one model, so the
+     HTML deck and the .pptx can never drift apart. */
+  function slideModel(data) {
+    const p = data.profile || {}, L = labels(data), out = [];
 
-    add(S.cover(p), p.name || 'Portfolio', [p.title, p.school].filter(has));
+    out.push({ kind: 'cover', name: p.name || 'Your name', role: p.title,
+      meta: [p.school, p.location].filter(has).join(' \u00b7 '), tagline: p.tagline });
 
     if (has(p.summary)) {
-      const extra = has(p.qualification)
-        ? `<div class="grouprow" style="margin-top:26px"><h3>${esc(L.qualification)}</h3>
-           <div class="chipwrap"><span class="pill">${esc(p.qualification)}</span></div></div>` : '';
-      add(S.prose(L.about, L.who, p.summary, extra), L.who, [p.summary]);
+      out.push({ kind: 'prose', kicker: L.about, title: L.who, text: p.summary,
+        chips: has(p.qualification) ? { label: L.qualification, items: [p.qualification] } : null });
     }
 
     const stats = (data.stats || []).filter(s => has(s.value));
-    if (stats.length) add(S.stats(L.glance, stats), L.glance, stats.map(s => `${s.value} — ${s.label}`));
+    if (stats.length) out.push({ kind: 'stats', kicker: L.glance, title: L.glance, items: stats });
 
-    listSlide(L.about, L.education, (data.education || []).filter(e => has(e.degree))
-      .map(e => [e.degree, e.institution, e.year].filter(has).join(' — ')));
+    const list = (kicker, title, rows) => {
+      if (rows.length) out.push({ kind: 'bullets', kicker, title, sub: '', items: rows });
+    };
 
-    listSlide(L.about, L.certifications, (data.certifications || []).filter(c => has(c.name))
-      .map(c => [c.name, c.issuer, c.year].filter(has).join(' — ')));
+    list(L.about, L.education, (data.education || []).filter(e => has(e.degree))
+      .map(e => [e.degree, e.institution, e.year].filter(has).join(' \u2014 ')));
+
+    list(L.about, L.certifications, (data.certifications || []).filter(c => has(c.name))
+      .map(c => [c.name, c.issuer, c.year].filter(has).join(' \u2014 ')));
 
     (data.experience || []).filter(e => has(e.role)).forEach(e => {
-      const sub = [[e.start, e.end].filter(has).join(' – '), e.org, e.location].filter(has).join(' · ');
-      const bullets = has(e.bullets) ? e.bullets : (sub ? [sub] : []);
-      add(S.bullets(L.experience, e.role, sub, bullets), e.role, bullets);
+      const sub = [[e.start, e.end].filter(has).join(' \u2013 '), e.org, e.location].filter(has).join(' \u00b7 ');
+      out.push({ kind: 'bullets', kicker: L.experience, title: e.role, sub,
+        items: has(e.bullets) ? e.bullets : (sub ? [sub] : []) });
     });
 
     (data.practice || []).filter(e => has(e.title)).forEach(e => {
-      const bullets = has(e.methods) ? e.methods.slice() : [];
-      if (has(e.description)) bullets.unshift(e.description);
-      add(S.bullets(L.practice, e.title, [e.subject, e.year].filter(has).join(' · '), bullets),
-        e.title, bullets);
+      const items = has(e.methods) ? e.methods.slice() : [];
+      if (has(e.description)) items.unshift(e.description);
+      out.push({ kind: 'bullets', kicker: L.practice, title: e.title,
+        sub: [e.subject, e.year].filter(has).join(' \u00b7 '), items });
     });
 
-    listSlide(L.achievements, L.achievements, (data.achievements || []).filter(a => has(a.title))
-      .map(a => [a.title, a.event, a.result, a.year].filter(has).join(' — ')));
+    list(L.achievements, L.achievements, (data.achievements || []).filter(a => has(a.title))
+      .map(a => [a.title, a.event, a.result, a.year].filter(has).join(' \u2014 ')));
 
-    listSlide(L.policies, L.policies, (data.policies || []).filter(x => has(x.title))
-      .map(x => [x.title, x.role, x.period].filter(has).join(' — ')));
+    list(L.policies, L.policies, (data.policies || []).filter(x => has(x.title))
+      .map(x => [x.title, x.role, x.period].filter(has).join(' \u2014 ')));
 
-    listSlide(L.development, L.development, (data.development || []).filter(x => has(x.title))
-      .map(x => [x.title, x.kind, x.issuer, x.year].filter(has).join(' — ')));
+    list(L.development, L.development, (data.development || []).filter(x => has(x.title))
+      .map(x => [x.title, x.kind, x.issuer, x.year].filter(has).join(' \u2014 ')));
 
     const sk = (data.skills || []).filter(g => has(g.items));
-    if (sk.length) add(S.groups(L.skills, L.skills, sk), L.skills,
-      sk.map(g => `${g.group}: ${g.items.join(', ')}`));
+    if (sk.length) out.push({ kind: 'groups', kicker: L.skills, title: L.skills, groups: sk });
 
-    listSlide(L.documents, L.documents, (data.documents || []).filter(d => has(d.title))
-      .map(d => d.title + (has(d.description) ? ` — ${d.description}` : '')));
+    list(L.documents, L.documents, (data.documents || []).filter(d => has(d.title))
+      .map(d => d.title + (has(d.description) ? ' \u2014 ' + d.description : '')));
 
     (data.gallery || []).filter(g => has(g.src)).forEach((g, i) => {
-      const title = g.caption || `${L.gallery} ${i + 1}`;
-      add(S.image(L.gallery, title, g.src), title, []);
+      out.push({ kind: 'image', kicker: L.gallery, title: g.caption || (L.gallery + ' ' + (i + 1)), src: g.src });
     });
 
     (data.testimonials || []).filter(t => has(t.quote)).forEach(t => {
-      add(S.quote(t.quote, [t.author, t.role].filter(has).join(', ')), L.testimonials, [t.quote]);
+      out.push({ kind: 'quote', kicker: L.testimonials, text: t.quote,
+        who: [t.author, t.role].filter(has).join(', ') });
     });
 
-    add(S.closing(L.thanks, p), L.thanks, [p.email, p.phone, p.website].filter(has));
+    out.push({ kind: 'closing', kicker: L.thanks, title: p.name || '',
+      items: [p.email, p.phone, p.website].filter(has) });
 
-    const name = esc(p.name || '');
-    const html = out.map((slide, i) => {
+    return out;
+  }
+
+  const toHTML = {
+    cover: m => S.cover({ name: m.name, title: m.role, school: m.meta, tagline: m.tagline }),
+    prose: m => S.prose(m.kicker, m.title, m.text, m.chips
+      ? `<div class="grouprow" style="margin-top:26px"><h3>${esc(m.chips.label)}</h3>
+         <div class="chipwrap">${m.chips.items.map(i => `<span class="pill">${esc(i)}</span>`).join('')}</div></div>`
+      : ''),
+    stats: m => S.stats(m.kicker, m.items),
+    bullets: m => S.bullets(m.kicker, m.title, m.sub, m.items),
+    groups: m => S.groups(m.kicker, m.title, m.groups),
+    image: m => S.image(m.kicker, m.title, m.src),
+    quote: m => S.quote(m.text, m.who),
+    closing: m => S.closing(m.kicker, { name: m.title, email: m.items[0], phone: m.items[1], website: m.items[2] })
+  };
+
+  function slides(data) {
+    const model = slideModel(data);
+    const name = esc((data.profile || {}).name || '');
+    const outline = model.map(m => {
+      const head = m.kind === 'cover' ? m.name : (m.title || m.kicker || '');
+      const rows = m.kind === 'stats' ? m.items.map(s => s.value + ' \u2014 ' + s.label)
+        : m.kind === 'groups' ? m.groups.map(g => g.group + ': ' + (g.items || []).join(', '))
+        : m.kind === 'quote' ? [m.text]
+        : m.kind === 'prose' ? [m.text]
+        : (m.items || []);
+      return head + (rows.length ? '\n' + rows.map(b => '\t' + b).join('\n') : '');
+    }).join('\n\n');
+
+    const html = model.map((m, i) => {
+      const slide = toHTML[m.kind](m);
       let body = slide;
       if (i > 0) {
         const at = slide.lastIndexOf('</div>');
         body = slide.slice(0, at)
-          + `<div class="foot"><span>${name}</span><span>${i + 1} / ${out.length}</span></div>`
+          + `<div class="foot"><span>${name}</span><span>${i + 1} / ${model.length}</span></div>`
           + slide.slice(at);
       }
       return `<div class="slidebox" data-i="${i}">${body}</div>`;
     }).join('');
 
-    return { html, count: out.length, outline: outline.join('\n\n') };
+    return { html, count: model.length, outline };
   }
 
   /* ---------------- the finished, standalone document ---------------- */
@@ -372,5 +398,6 @@
 </html>`;
   }
 
-  window.Render = { esc, has, initials, portfolio, slides, document: document_, LABELS, FONTS };
+  window.Render = { esc, has, initials, portfolio, slides, slideModel, document: document_,
+    LABELS, FONTS };
 })();

@@ -7,7 +7,7 @@
     "email": "maria.petrova@example.com",
     "phone": "",
     "website": "",
-    "photo": "images/profile.jpg",
+    "photo": "",
     "tagline": "Making abstract mathematics concrete for every learner.",
     "summary": "Twelve years of classroom experience in secondary mathematics, with a focus on inquiry-based learning and supporting students who arrive believing they are “not maths people”. National olympiad coach and author of an open-licensed problem set used in 40+ schools.",
     "languages": [
@@ -130,19 +130,22 @@
       "title": "Curriculum Vitae",
       "description": "Full CV, updated August 2026.",
       "file": "docs/cv.pdf",
-      "type": "PDF"
+      "type": "PDF",
+      "filename": "cv.pdf"
     },
     {
       "title": "Sample Unit Plan - Quadratics Through Modelling",
       "description": "Six-lesson unit with assessment rubric.",
       "file": "docs/unit-plan-quadratics.pdf",
-      "type": "PDF"
+      "type": "PDF",
+      "filename": "unit-plan-quadratics.pdf"
     },
     {
       "title": "Teaching Philosophy Statement",
       "description": "One page on how I think about the classroom.",
       "file": "docs/teaching-philosophy.pdf",
-      "type": "PDF"
+      "type": "PDF",
+      "filename": "teaching-philosophy.pdf"
     }
   ],
   "gallery": [
@@ -164,6 +167,6 @@
   ],
   "settings": {
     "accent": "#1f5c4c",
-    "footerNote": "Built with a static site on GitHub Pages."
+    "footerNote": "Built with the Teaching Portfolio builder."
   }
 }

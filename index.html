@@ -3,38 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Teaching Portfolio</title>
-  <meta name="description" content="Professional teaching portfolio.">
+  <title>Teaching Portfolio Builder</title>
+  <meta name="description" content="Enter your details, drop in your photos and documents, and download a finished teaching portfolio as one file. Nothing is uploaded anywhere.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
-  <header class="topbar no-print">
-    <div class="wrap">
-      <span class="brand" id="brand">Portfolio</span>
-      <nav id="nav"></nav>
-      <a class="iconbtn" href="slides.html">▶ Present</a>
-      <button class="iconbtn" id="print" type="button">⎙ PDF</button>
-      <button class="iconbtn" id="theme" type="button" aria-label="Toggle theme">☾</button>
+
+<header class="appbar">
+  <span class="logo">Teaching <b>Portfolio</b></span>
+  <button class="btn ghost" id="example" type="button">Load example</button>
+  <label class="btn ghost" style="margin:0">
+    Open a file<input type="file" id="open" accept=".html,text/html" hidden>
+  </label>
+  <button class="btn ghost" id="reset" type="button">Start over</button>
+  <span class="spacer"></span>
+  <span class="size" id="size"></span>
+  <button class="btn primary" id="download" type="button">⤓ Download portfolio</button>
+</header>
+
+<div class="shell">
+  <div class="pane-form">
+    <div class="intro">
+      <h1>Your portfolio, in one file.</h1>
+      <p>Fill in what you have and drop in your photos and documents. Everything stays in this
+      browser — nothing is uploaded. When you are happy, download a single HTML file that holds
+      the portfolio, the slide deck and every image inside it. Email it, print it to PDF, or put
+      it on any web host.</p>
     </div>
-  </header>
-
-  <main id="main">
-    <div class="hero" id="hero"></div>
-    <div id="stats"></div>
-    <div id="sections"></div>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <span id="footer-note"></span>
-      <a class="iconbtn no-print" href="editor.html">✎ Edit content</a>
+    <div id="form"></div>
+    <div class="warn">
+      <b>Your work is saved in this browser only.</b> Clearing site data, or opening the builder on
+      another device, starts from scratch. The downloaded file is the durable copy — it can be
+      re-opened here later with <em>Open a file</em>.
     </div>
-  </footer>
+  </div>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/portfolio.js"></script>
+  <div class="pane-view">
+    <div class="view-head">
+      <div class="tabs" role="tablist">
+        <button id="tab-portfolio" role="tab" aria-selected="true" type="button">Portfolio</button>
+        <button id="tab-slides" role="tab" aria-selected="false" type="button">Slides</button>
+      </div>
+      <span class="note" id="viewnote">live preview</span>
+    </div>
+    <iframe id="preview" title="Portfolio preview"></iframe>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/media.js"></script>
+<script src="assets/js/render.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>

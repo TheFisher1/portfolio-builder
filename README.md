@@ -61,18 +61,39 @@ assets/js/render.js     data -> portfolio and slide markup, and the standalone d
 assets/js/viewer.js     the script that ships inside every exported file
 assets/css/app.css      the builder's chrome
 assets/css/viewer.css   the portfolio and deck design, inlined into exports
+serve.py                local preview server, run with uv
 data/example.json       the worked example behind "Load example"
-docs/, images/          sample files the example pulls in (placeholders - replace or delete)
+data/example-files/     placeholder photos and PDFs the example pulls in
 ```
 
 ## Working on it locally
 
 ```bash
-python3 -m http.server 8000
+uv run serve.py
 ```
 
-Then <http://localhost:8000>. Opening `index.html` off the disk will not work: the builder fetches
-`viewer.css` and `viewer.js` to inline them, and browsers block that over `file://`.
+Then <http://localhost:8000> (`--port` to change it). [uv](https://docs.astral.sh/uv/) reads the
+inline metadata at the top of `serve.py`, picks a Python and runs it — there is nothing to install
+and no virtualenv to activate.
+
+The project has no Python dependencies; `serve.py` is stdlib only. It exists because two things are
+easy to get wrong with a bare `python3 -m http.server`: `.js` can come back as `text/plain` from the
+system MIME registry, and cached files hide your edits. This one pins the content types and sends
+`Cache-Control: no-store`.
+
+Opening `index.html` off the disk will not work either way: the builder fetches `viewer.css` and
+`viewer.js` to inline them, and browsers block that over `file://`.
+
+## The example
+
+"Load example" fills the form with a fictional teacher — Maria Petrova, at a school that does not
+exist — and pulls in the placeholder photos and PDFs from `data/example-files/`. None of it is
+anyone's real CV. It is there so the builder has something to show on a first visit; delete it and
+the builder still works.
+
+## Licence
+
+MIT — see [LICENSE](LICENSE). The example content is part of it; the design is yours to change.
 
 ## Before you share what you make
 

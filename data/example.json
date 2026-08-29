@@ -129,32 +129,32 @@
     {
       "title": "Curriculum Vitae",
       "description": "Full CV, updated August 2026.",
-      "file": "docs/cv.pdf",
+      "file": "data/example-files/cv.pdf",
       "type": "PDF",
       "filename": "cv.pdf"
     },
     {
       "title": "Sample Unit Plan - Quadratics Through Modelling",
       "description": "Six-lesson unit with assessment rubric.",
-      "file": "docs/unit-plan-quadratics.pdf",
+      "file": "data/example-files/unit-plan-quadratics.pdf",
       "type": "PDF",
       "filename": "unit-plan-quadratics.pdf"
     },
     {
       "title": "Teaching Philosophy Statement",
       "description": "One page on how I think about the classroom.",
-      "file": "docs/teaching-philosophy.pdf",
+      "file": "data/example-files/teaching-philosophy.pdf",
       "type": "PDF",
       "filename": "teaching-philosophy.pdf"
     }
   ],
   "gallery": [
     {
-      "src": "images/classroom-1.svg",
+      "src": "data/example-files/classroom-1.svg",
       "caption": "Grade 9 modelling project presentations, 2025"
     },
     {
-      "src": "images/olympiad.svg",
+      "src": "data/example-files/olympiad.svg",
       "caption": "National olympiad training camp"
     }
   ],

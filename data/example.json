@@ -24,7 +24,8 @@
         "label": "Google Scholar",
         "url": ""
       }
-    ]
+    ],
+    "qualification": "Teacher of Mathematics (Master's degree)"
   },
   "stats": [
     {
@@ -42,31 +43,6 @@
     {
       "value": "6",
       "label": "Curricula authored"
-    }
-  ],
-  "experience": [
-    {
-      "role": "Head of Mathematics Department",
-      "org": "Sofia High School of Mathematics",
-      "location": "Sofia",
-      "start": "2020",
-      "end": "Present",
-      "bullets": [
-        "Lead a team of nine teachers; redesigned the grades 8-10 curriculum around problem-based units.",
-        "Raised the share of students achieving the top matriculation band from 31% to 48% over three years.",
-        "Introduced a weekly peer-observation cycle now adopted school-wide."
-      ]
-    },
-    {
-      "role": "Mathematics Teacher",
-      "org": "First English Language School",
-      "location": "Sofia",
-      "start": "2014",
-      "end": "2020",
-      "bullets": [
-        "Taught IB Mathematics HL/SL and national curriculum grades 9-12.",
-        "Founded the school's olympiad club, growing it from 6 to 45 participants."
-      ]
     }
   ],
   "education": [
@@ -95,6 +71,127 @@
       "issuer": "Google for Education",
       "year": "2021",
       "url": ""
+    }
+  ],
+  "experience": [
+    {
+      "role": "Head of Mathematics Department",
+      "org": "Sofia High School of Mathematics",
+      "location": "Sofia",
+      "start": "2020",
+      "end": "Present",
+      "bullets": [
+        "Lead a team of nine teachers; redesigned the grades 8-10 curriculum around problem-based units.",
+        "Raised the share of students achieving the top matriculation band from 31% to 48% over three years.",
+        "Introduced a weekly peer-observation cycle now adopted school-wide."
+      ]
+    },
+    {
+      "role": "Mathematics Teacher",
+      "org": "First English Language School",
+      "location": "Sofia",
+      "start": "2014",
+      "end": "2020",
+      "bullets": [
+        "Taught IB Mathematics HL/SL and national curriculum grades 9-12.",
+        "Founded the school's olympiad club, growing it from 6 to 45 participants."
+      ]
+    }
+  ],
+  "practice": [
+    {
+      "title": "Quadratics through modelling",
+      "subject": "Grade 9 mathematics",
+      "year": "2024–2025",
+      "description": "A six-lesson unit in which students fit quadratic models to a dataset they collect themselves, then defend the model they chose.",
+      "methods": [
+        "Problem-based learning",
+        "GeoGebra modelling",
+        "Peer assessment against a shared rubric",
+        "Competency-based tasks with open outcomes"
+      ]
+    },
+    {
+      "title": "Flipped classroom for calculus",
+      "subject": "Grade 11 mathematics",
+      "year": "2023–2024",
+      "description": "Theory read at home, lesson time spent entirely on problems in mixed-attainment pairs.",
+      "methods": [
+        "Flipped instruction",
+        "Mixed-attainment pairing",
+        "Weekly diagnostic quizzes",
+        "Individual progress conferences"
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "14 olympiad medallists coached",
+      "event": "National Mathematics Olympiad",
+      "year": "2019–2025",
+      "result": "Four gold, five silver, five bronze"
+    },
+    {
+      "title": "Top matriculation band up from 31% to 48%",
+      "event": "State matriculation examination",
+      "year": "2020–2023",
+      "result": "Department-wide, across three cohorts"
+    },
+    {
+      "title": "Maths Without Borders",
+      "event": "Erasmus+ KA229 partnership",
+      "year": "2022–2024",
+      "result": "18 students, four partner schools, open-licensed problem set"
+    }
+  ],
+  "policies": [
+    {
+      "title": "Weekly peer-observation cycle",
+      "role": "Designed and led",
+      "period": "2021 – present",
+      "description": "Paired observation with a written note back within the day; adopted school-wide in 2022."
+    },
+    {
+      "title": "School strategy for mathematics 2023–2027",
+      "role": "Working group member",
+      "period": "2023",
+      "description": "Wrote the assessment and progression sections."
+    },
+    {
+      "title": "Induction of newly qualified teachers",
+      "role": "Mentor",
+      "period": "2020 – present",
+      "description": "Two mentees a year through their first-year induction."
+    }
+  ],
+  "development": [
+    {
+      "title": "Втора професионално-квалификационна степен",
+      "kind": "ПКС",
+      "issuer": "ДИУУ, Софийски университет",
+      "year": "2023",
+      "notes": ""
+    },
+    {
+      "title": "Трета професионално-квалификационна степен",
+      "kind": "ПКС",
+      "issuer": "ДИУУ, Софийски университет",
+      "year": "2020",
+      "notes": ""
+    },
+    {
+      "title": "Assessment for learning in mathematics",
+      "kind": "Training, 32 credits",
+      "issuer": "РУО София-град",
+      "year": "2024",
+      "notes": ""
+    },
+    {
+      "title": "Teaching students with special educational needs",
+      "kind": "Training, 16 credits",
+      "issuer": "ДИУУ, Софийски университет",
+      "year": "2022",
+      "notes": ""
     }
   ],
   "skills": [
@@ -167,6 +264,7 @@
   ],
   "settings": {
     "accent": "#4a5240",
-    "footerNote": "Built with the Teaching Portfolio builder."
+    "footerNote": "Built with the Portfolio Builder.",
+    "language": "en"
   }
 }

@@ -21,6 +21,24 @@ back end — the whole thing is a static page that does its work in the browser.
 The downloaded file carries its own source data in a `<script type="application/json">` tag, so
 **Open a file** in the builder reads it straight back — images included. The file is the save format.
 
+## The required sections
+
+The section set follows the five parts a Bulgarian teaching portfolio must contain:
+
+| Section | Regulation | What goes in it |
+|---|---|---|
+| General information | Общи данни | Name, education, professional qualification, diplomas, certificates |
+| Practical application | Практическо приложение | Work with students, methods used, innovative and competency-based approaches |
+| Achievements | Постижения | Student results, competitions, olympiads, projects |
+| Institutional policies | Институционални политики | Your part in the school's or kindergarten's policies |
+| Career development | Кариерно развитие | Qualification upgrading, ПКС degrees, trainings |
+
+Experience, competencies, documents, classroom photos and references sit alongside them. Every section
+is optional — leave one empty and it does not appear.
+
+**Settings → Headings** switches the section titles between English and Bulgarian. Only the headings
+change; everything else is the teacher's own text, in whatever language they wrote it.
+
 ## What the exported file does
 
 - **Portfolio view** — ruled paper, numbered sections, documents as download cards.

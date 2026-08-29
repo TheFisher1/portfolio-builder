@@ -1,5 +1,9 @@
 /* Pure data -> markup. Nothing here touches the DOM, so the same code makes
-   the live preview and the file the teacher downloads. */
+   the live preview and the file the teacher downloads.
+
+   The section set follows the five parts a Bulgarian teaching portfolio must
+   contain: общи данни, практическо приложение, постижения, институционални
+   политики, кариерно развитие. */
 (function () {
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -8,6 +12,28 @@
   const initials = name => String(name || '?').trim().split(/\s+/).slice(0, 2)
     .map(w => w[0] || '').join('').toUpperCase();
   const isData = v => typeof v === 'string' && v.slice(0, 5) === 'data:';
+
+  /* Headings in the portfolio's own language. Everything else is the
+     teacher's text, so it is already in whatever language they wrote. */
+  const LABELS = {
+    en: {
+      about: 'General information', education: 'Education', certifications: 'Diplomas & certificates',
+      experience: 'Experience', practice: 'Practical application', achievements: 'Achievements',
+      policies: 'Institutional policies', development: 'Career development',
+      skills: 'Competencies', documents: 'Documents', gallery: 'Classroom', testimonials: 'References',
+      languages: 'Languages', glance: 'At a glance', who: 'Who I am', thanks: 'Thank you',
+      qualification: 'Professional qualification'
+    },
+    bg: {
+      about: 'Общи данни', education: 'Образование', certifications: 'Дипломи и сертификати',
+      experience: 'Професионален опит', practice: 'Практическо приложение', achievements: 'Постижения',
+      policies: 'Институционални политики', development: 'Кариерно развитие',
+      skills: 'Компетентности', documents: 'Документи', gallery: 'В класната стая',
+      testimonials: 'Препоръки', languages: 'Езици', glance: 'Накратко', who: 'Общи данни',
+      thanks: 'Благодаря', qualification: 'Придобита професионална квалификация'
+    }
+  };
+  const labels = data => LABELS[((data.settings || {}).language === 'bg') ? 'bg' : 'en'];
 
   /* ---------------- portfolio ---------------- */
 
@@ -37,25 +63,33 @@
     </div>`;
   }
 
-  function timeline(list, kind) {
+  // One shape for every dated list: a date in the margin, a heading, a
+  // subheading, bullets, a note.
+  function entryList(list, pick) {
     if (!has(list)) return '';
-    return `<div class="timeline">${list.map(e => {
-      const when = kind === 'experience'
-        ? [e.start, e.end].filter(has).map(esc).join(' – ')
-        : esc(e.year || '');
-      const head = kind === 'experience' ? e.role : e.degree;
-      const org = kind === 'experience'
-        ? [e.org, e.location].filter(has).map(esc).join(' · ')
-        : esc(e.institution || '');
-      const bullets = has(e.bullets) ? `<ul>${e.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : '';
-      const notes = has(e.notes) ? `<p class="note">${esc(e.notes)}</p>` : '';
-      if (!has(head) && !org) return '';
-      return `<article class="entry">
-        <div class="when">${when}</div>
-        <div class="what"><h3>${esc(head)}</h3>${org ? `<div class="org">${org}</div>` : ''}${bullets}${notes}</div>
-      </article>`;
-    }).join('')}</div>`;
+    const rows = (list || []).map(pick).filter(r => has(r.head));
+    if (!rows.length) return '';
+    return `<div class="timeline">${rows.map(r => `<article class="entry">
+        <div class="when">${esc(r.when || '')}</div>
+        <div class="what">
+          <h3>${esc(r.head)}</h3>
+          ${has(r.sub) ? `<div class="org">${esc(r.sub)}</div>` : ''}
+          ${has(r.bullets) ? `<ul>${r.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : ''}
+          ${has(r.note) ? `<p class="note">${esc(r.note)}</p>` : ''}
+        </div>
+      </article>`).join('')}</div>`;
   }
+
+  const pick = {
+    experience: e => ({ when: [e.start, e.end].filter(has).join(' – '), head: e.role,
+      sub: [e.org, e.location].filter(has).join(' · '), bullets: e.bullets }),
+    education: e => ({ when: e.year, head: e.degree, sub: e.institution, note: e.notes }),
+    practice: e => ({ when: e.year, head: e.title, sub: e.subject, bullets: e.methods, note: e.description }),
+    achievements: e => ({ when: e.year, head: e.title, sub: e.event, note: e.result }),
+    policies: e => ({ when: e.period, head: e.title, sub: e.role, note: e.description }),
+    development: e => ({ when: e.year, head: e.title, sub: [e.kind, e.issuer].filter(has).join(' · '),
+      note: e.notes })
+  };
 
   function docLink(d) {
     const label = `<span class="tag">${esc(d.type || 'File')}</span>
@@ -70,7 +104,7 @@
   }
 
   function portfolio(data) {
-    const p = data.profile || {};
+    const p = data.profile || {}, L = labels(data);
     let n = 0;
     const section = (id, title, body) => {
       if (!body) return '';
@@ -85,10 +119,13 @@
           `<div class="stat"><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join('')}</div></div>`
       : '';
 
+    const pills = (title, items) => `<div class="skillgroup"><h3>${esc(title)}</h3>
+      <div class="pills">${items.map(i => `<span class="pill">${esc(i)}</span>`).join('')}</div></div>`;
+
     const about = [
       has(p.summary) ? `<div class="prose"><p>${esc(p.summary)}</p></div>` : '',
-      has(p.languages) ? `<div class="skillgroup" style="margin-top:22px"><h3>Languages</h3>
-        <div class="pills">${p.languages.map(l => `<span class="pill">${esc(l)}</span>`).join('')}</div></div>` : ''
+      has(p.qualification) ? `<div style="margin-top:18px">${pills(L.qualification, [p.qualification])}</div>` : '',
+      has(p.languages) ? `<div style="margin-top:4px">${pills(L.languages, p.languages)}</div>` : ''
     ].join('');
 
     const certs = has(data.certifications)
@@ -100,9 +137,7 @@
         }).join('')}</div>` : '';
 
     const skills = has(data.skills)
-      ? data.skills.filter(g => has(g.items)).map(g => `<div class="skillgroup"><h3>${esc(g.group)}</h3>
-          <div class="pills">${g.items.map(i => `<span class="pill">${esc(i)}</span>`).join('')}</div></div>`).join('')
-      : '';
+      ? data.skills.filter(g => has(g.items)).map(g => pills(g.group, g.items)).join('') : '';
 
     const docs = has(data.documents)
       ? `<div class="cards">${data.documents.map(docLink).join('')}</div>` : '';
@@ -118,23 +153,24 @@
           <cite>${[t.author, t.role].filter(has).map(esc).join(', ')}</cite></blockquote>`).join('')
       : '';
 
-    const body = [
-      section('about', 'About', about),
-      section('experience', 'Experience', timeline(data.experience, 'experience')),
-      section('education', 'Education', timeline(data.education, 'education')),
-      section('certifications', 'Certifications', certs),
-      section('skills', 'Skills', skills),
-      section('documents', 'Documents', docs),
-      section('gallery', 'Classroom', gallery),
-      section('testimonials', 'References', quotes)
-    ].join('');
+    const order = [
+      ['about', L.about, about],
+      ['education', L.education, entryList(data.education, pick.education)],
+      ['certifications', L.certifications, certs],
+      ['experience', L.experience, entryList(data.experience, pick.experience)],
+      ['practice', L.practice, entryList(data.practice, pick.practice)],
+      ['achievements', L.achievements, entryList(data.achievements, pick.achievements)],
+      ['policies', L.policies, entryList(data.policies, pick.policies)],
+      ['development', L.development, entryList(data.development, pick.development)],
+      ['skills', L.skills, skills],
+      ['documents', L.documents, docs],
+      ['gallery', L.gallery, gallery],
+      ['testimonials', L.testimonials, quotes]
+    ];
 
-    const labels = { about: 'About', experience: 'Experience', education: 'Education',
-      certifications: 'Certifications', skills: 'Skills', documents: 'Documents',
-      gallery: 'Classroom', testimonials: 'References' };
-    const nav = Object.keys(labels)
-      .filter(id => body.indexOf(`id="${id}"`) !== -1)
-      .map(id => `<a href="#${id}">${labels[id]}</a>`).join('');
+    const body = order.map(([id, title, html]) => section(id, title, html)).join('');
+    const nav = order.filter(([id, , html]) => html)
+      .map(([id, title]) => `<a href="#${id}">${esc(title)}</a>`).join('');
 
     const note = (data.settings && data.settings.footerNote) || '';
     const footer = `<footer><div class="wrap">
@@ -184,66 +220,81 @@
     quote: (q, who) => `<div class="slide quote">
         <blockquote><p>${esc(q)}</p><cite>${esc(who)}</cite></blockquote>
       </div>`,
-    closing: p => `<div class="slide">
-        <div class="kicker">Thank you</div><h2>${esc(p.name || '')}</h2>
+    closing: (kicker, p) => `<div class="slide">
+        <div class="kicker">${esc(kicker)}</div><h2>${esc(p.name || '')}</h2>
         <ul>${[p.email, p.phone, p.website].filter(has).map(l => `<li>${esc(l)}</li>`).join('')}</ul>
       </div>`
   };
 
   function slides(data) {
-    const p = data.profile || {}, out = [], outline = [];
+    const p = data.profile || {}, L = labels(data), out = [], outline = [];
     const add = (html, title, bullets) => {
       out.push(html);
       outline.push(title + (bullets && bullets.length ? '\n' + bullets.map(b => '\t' + b).join('\n') : ''));
+    };
+    // One slide per item for the lists a portfolio is assessed on; a single
+    // summary slide where a list is just a list.
+    const listSlide = (kicker, title, rows) => {
+      if (rows.length) add(S.bullets(kicker, title, '', rows), title, rows);
     };
 
     add(S.cover(p), p.name || 'Portfolio', [p.title, p.school].filter(has));
 
     if (has(p.summary)) {
-      const langs = has(p.languages)
-        ? `<div class="grouprow" style="margin-top:26px"><h3>Languages</h3>
-           <div class="chipwrap">${p.languages.map(l => `<span class="pill">${esc(l)}</span>`).join('')}</div></div>` : '';
-      add(S.prose('About', 'Who I am', p.summary, langs), 'Who I am', [p.summary]);
+      const extra = has(p.qualification)
+        ? `<div class="grouprow" style="margin-top:26px"><h3>${esc(L.qualification)}</h3>
+           <div class="chipwrap"><span class="pill">${esc(p.qualification)}</span></div></div>` : '';
+      add(S.prose(L.about, L.who, p.summary, extra), L.who, [p.summary]);
     }
 
     const stats = (data.stats || []).filter(s => has(s.value));
-    if (stats.length) {
-      add(S.stats('At a glance', stats), 'At a glance', stats.map(s => `${s.value} — ${s.label}`));
-    }
+    if (stats.length) add(S.stats(L.glance, stats), L.glance, stats.map(s => `${s.value} — ${s.label}`));
+
+    listSlide(L.about, L.education, (data.education || []).filter(e => has(e.degree))
+      .map(e => [e.degree, e.institution, e.year].filter(has).join(' — ')));
+
+    listSlide(L.about, L.certifications, (data.certifications || []).filter(c => has(c.name))
+      .map(c => [c.name, c.issuer, c.year].filter(has).join(' — ')));
 
     (data.experience || []).filter(e => has(e.role)).forEach(e => {
       const sub = [[e.start, e.end].filter(has).join(' – '), e.org, e.location].filter(has).join(' · ');
       const bullets = has(e.bullets) ? e.bullets : (sub ? [sub] : []);
-      add(S.bullets('Experience', e.role, sub, bullets), e.role, bullets);
+      add(S.bullets(L.experience, e.role, sub, bullets), e.role, bullets);
     });
 
-    const edu = (data.education || []).filter(e => has(e.degree))
-      .map(e => [e.degree, e.institution, e.year].filter(has).join(' — '));
-    if (edu.length) add(S.bullets('Education', 'Education', '', edu), 'Education', edu);
+    (data.practice || []).filter(e => has(e.title)).forEach(e => {
+      const bullets = has(e.methods) ? e.methods.slice() : [];
+      if (has(e.description)) bullets.unshift(e.description);
+      add(S.bullets(L.practice, e.title, [e.subject, e.year].filter(has).join(' · '), bullets),
+        e.title, bullets);
+    });
 
-    const certs = (data.certifications || []).filter(c => has(c.name))
-      .map(c => [c.name, c.issuer, c.year].filter(has).join(' — '));
-    if (certs.length) add(S.bullets('Credentials', 'Certifications', '', certs), 'Certifications', certs);
+    listSlide(L.achievements, L.achievements, (data.achievements || []).filter(a => has(a.title))
+      .map(a => [a.title, a.event, a.result, a.year].filter(has).join(' — ')));
+
+    listSlide(L.policies, L.policies, (data.policies || []).filter(x => has(x.title))
+      .map(x => [x.title, x.role, x.period].filter(has).join(' — ')));
+
+    listSlide(L.development, L.development, (data.development || []).filter(x => has(x.title))
+      .map(x => [x.title, x.kind, x.issuer, x.year].filter(has).join(' — ')));
 
     const sk = (data.skills || []).filter(g => has(g.items));
-    if (sk.length) {
-      add(S.groups('Practice', 'Skills', sk), 'Skills', sk.map(g => `${g.group}: ${g.items.join(', ')}`));
-    }
+    if (sk.length) add(S.groups(L.skills, L.skills, sk), L.skills,
+      sk.map(g => `${g.group}: ${g.items.join(', ')}`));
 
-    const docs = (data.documents || []).filter(d => has(d.title))
-      .map(d => d.title + (has(d.description) ? ` — ${d.description}` : ''));
-    if (docs.length) add(S.bullets('Portfolio', 'Documents', '', docs), 'Documents', docs);
+    listSlide(L.documents, L.documents, (data.documents || []).filter(d => has(d.title))
+      .map(d => d.title + (has(d.description) ? ` — ${d.description}` : '')));
 
     (data.gallery || []).filter(g => has(g.src)).forEach((g, i) => {
-      const title = g.caption || `Classroom ${i + 1}`;
-      add(S.image('Classroom', title, g.src), title, []);
+      const title = g.caption || `${L.gallery} ${i + 1}`;
+      add(S.image(L.gallery, title, g.src), title, []);
     });
 
     (data.testimonials || []).filter(t => has(t.quote)).forEach(t => {
-      add(S.quote(t.quote, [t.author, t.role].filter(has).join(', ')), 'Reference', [t.quote]);
+      add(S.quote(t.quote, [t.author, t.role].filter(has).join(', ')), L.testimonials, [t.quote]);
     });
 
-    add(S.closing(p), 'Thank you', [p.email, p.phone, p.website].filter(has));
+    add(S.closing(L.thanks, p), L.thanks, [p.email, p.phone, p.website].filter(has));
 
     const name = esc(p.name || '');
     const html = out.map((slide, i) => {
@@ -275,10 +326,11 @@
     const p = data.profile || {};
     const page = portfolio(data);
     const deck = slides(data);
-    const title = [p.name, p.title].filter(has).map(esc).join(' — ') || 'Teaching portfolio';
+    const lang = ((data.settings || {}).language === 'bg') ? 'bg' : 'en';
+    const title = [p.name, p.title].filter(has).map(esc).join(' — ') || 'Portfolio';
 
     return `<!doctype html>
-<html lang="en"${theme ? ` data-theme="${esc(theme)}"` : ''}>
+<html lang="${lang}"${theme ? ` data-theme="${esc(theme)}"` : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -320,5 +372,5 @@
 </html>`;
   }
 
-  window.Render = { esc, has, initials, portfolio, slides, document: document_, FONTS };
+  window.Render = { esc, has, initials, portfolio, slides, document: document_, LABELS, FONTS };
 })();

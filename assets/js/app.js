@@ -10,6 +10,7 @@
     { path: 'profile', label: 'You', kind: 'object', open: true, fields: [
       { k: 'name', label: 'Full name' },
       { k: 'title', label: 'Job title' },
+      { k: 'qualification', label: 'Professional qualification', hint: 'придобита проф. квалификация', full: true },
       { k: 'school', label: 'School / institution' },
       { k: 'location', label: 'Location' },
       { k: 'email', label: 'Email' },
@@ -39,7 +40,38 @@
       { k: 'name', label: 'Name' }, { k: 'issuer', label: 'Issuer' },
       { k: 'year', label: 'Year' }, { k: 'url', label: 'Link' }
     ]},
-    { path: 'skills', label: 'Skills', kind: 'array', item: 'Group', fields: [
+    { path: 'practice', label: 'Practical application — практическо приложение',
+      kind: 'array', item: 'Entry', fields: [
+      { k: 'title', label: 'What you did', hint: 'a unit, a project, a way of working' },
+      { k: 'subject', label: 'Subject / year group' },
+      { k: 'year', label: 'When' },
+      { k: 'description', label: 'Description', type: 'textarea', full: true },
+      { k: 'methods', label: 'Methods and approaches', type: 'lines',
+        hint: 'one per line — innovative and competency-based approaches', full: true }
+    ]},
+    { path: 'achievements', label: 'Achievements — постижения',
+      kind: 'array', item: 'Achievement', fields: [
+      { k: 'title', label: 'Achievement' },
+      { k: 'event', label: 'Competition / olympiad / project' },
+      { k: 'year', label: 'Year' },
+      { k: 'result', label: 'Result', hint: 'places, marks, how many students', full: true }
+    ]},
+    { path: 'policies', label: 'Institutional policies — институционални политики',
+      kind: 'array', item: 'Policy', fields: [
+      { k: 'title', label: 'Policy or initiative' },
+      { k: 'role', label: 'Your part in it' },
+      { k: 'period', label: 'Period' },
+      { k: 'description', label: 'What came of it', type: 'textarea', full: true }
+    ]},
+    { path: 'development', label: 'Career development — кариерно развитие',
+      kind: 'array', item: 'Entry', fields: [
+      { k: 'title', label: 'Qualification or training' },
+      { k: 'kind', label: 'Kind', hint: 'ПКС, course, qualification credits' },
+      { k: 'issuer', label: 'Awarded by' },
+      { k: 'year', label: 'Year' },
+      { k: 'notes', label: 'Notes', type: 'textarea', full: true }
+    ]},
+    { path: 'skills', label: 'Competencies', kind: 'array', item: 'Group', fields: [
       { k: 'group', label: 'Group name', hint: 'e.g. Teaching' },
       { k: 'items', label: 'Skills', type: 'lines', hint: 'one per line', full: true }
     ]},
@@ -58,6 +90,8 @@
       { k: 'author', label: 'Author' }, { k: 'role', label: 'Their role' }
     ]},
     { path: 'settings', label: 'Settings', kind: 'object', fields: [
+      { k: 'language', label: 'Headings', type: 'select', options: [
+        { v: 'en', label: 'English' }, { v: 'bg', label: 'Български' }] },
       { k: 'accent', label: 'Accent colour', type: 'color' },
       { k: 'footerNote', label: 'Footer note', full: true }
     ]}
@@ -76,7 +110,10 @@
     if (f.type === 'textarea' || f.type === 'lines') {
       input = `<textarea data-k="${f.k}" data-type="${f.type}">${esc(v)}</textarea>`;
     } else if (f.type === 'color') {
-      input = `<input type="color" data-k="${f.k}" value="${esc(v || '#1f5c4c')}">`;
+      input = `<input type="color" data-k="${f.k}" value="${esc(v || '#4a5240')}">`;
+    } else if (f.type === 'select') {
+      input = `<select data-k="${f.k}">${f.options.map(o =>
+        `<option value="${esc(o.v)}"${o.v === v ? ' selected' : ''}>${esc(o.label)}</option>`).join('')}</select>`;
     } else if (f.type === 'image' || f.type === 'file') {
       input = `<div class="filefield" data-kind="${f.type}">
           <div class="thumb" data-thumb>none</div>
@@ -498,8 +535,10 @@
       keys.slice(0, -1).forEach(k => { node = node[k] = node[k] || {}; });
       node[keys[keys.length - 1]] = sec.kind === 'object' ? {} : [];
     });
-    d.settings = { accent: '#1f5c4c', footerNote: '' };
-    ['experience', 'education', 'skills'].forEach(k => { d[k] = [{}]; });
+    d.settings = { accent: '#4a5240', footerNote: '' };
+    ['education', 'experience', 'practice', 'achievements', 'policies', 'development', 'skills']
+      .forEach(k => { d[k] = [{}]; });
+    d.settings.language = 'en';
     return d;
   }
 

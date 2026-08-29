@@ -238,6 +238,7 @@ h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
 }
 .entry h3 { font-size: 25px; font-weight: 500; letter-spacing: -.01em; }
 .entry .org { font-style: italic; color: var(--ink-soft); font-size: 17px; margin-top: 2px; }
+.entry .note { margin: 10px 0 0; color: var(--ink-soft); max-width: 60ch; }
 .entry ul { margin: 12px 0 0; padding-left: 0; list-style: none; }
 .entry li { position: relative; padding-left: 22px; margin-bottom: 8px; max-width: 60ch; }
 .entry li::before {

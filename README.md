@@ -23,9 +23,14 @@ its own. The red margin line is fixed — it is the thing that makes the page re
 
 ## Deploy
 
-1. Create a repository on GitHub (public, or private on a paid plan) and put these files at its root.
-2. **Settings → Pages → Source: Deploy from a branch → `main` / `/ (root)`**.
-3. The site appears at `https://USERNAME.github.io/REPO/` in about a minute.
+1. Create a repository on GitHub (public, or private on a paid plan) and push these files to `main`.
+2. **Settings → Pages → Source: GitHub Actions.** That is the only switch to flip.
+3. `.github/workflows/deploy.yml` publishes the repository on every push to `main` — there is no build
+   step, the whole repo is the artifact. Watch it under the **Actions** tab.
+4. The site appears at `https://USERNAME.github.io/REPO/` a minute or so after the first run.
+
+Editing `data/portfolio.json` through GitHub's web interface counts as a push, so the teacher's own
+updates redeploy the site without anyone touching the terminal.
 
 Want `https://yourname.com`? Add a `CNAME` file with the domain and point a DNS `CNAME` record at
 `USERNAME.github.io`. GitHub issues the HTTPS certificate.

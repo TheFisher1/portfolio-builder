@@ -400,33 +400,19 @@ body.view-deck #portfolio, body.view-deck .topbar { display: none; }
 .slide p.body { font-size: 27px; line-height: 1.5; max-width: 24ch; }
 .slide p.body.wide { max-width: 42ch; }
 
-/* ---------- cover: chalkboard ---------- */
-.slide.cover {
-  background:
-    radial-gradient(120% 90% at 20% 15%, rgba(255,255,255,.055), transparent 60%),
-    radial-gradient(90% 70% at 85% 90%, rgba(255,255,255,.04), transparent 55%),
-    #2b1f2a;
-  color: #f4eef0;
-  padding: 92px 104px;
-  justify-content: center;
-}
-.slide.cover::before {
-  content: ""; inset: 34px; border: 1px solid rgba(244, 238, 240, .22);
-  background-image: none; opacity: 1;
-}
-.slide.cover::after { display: none; }
+/* ---------- cover ----------
+   The same sheet as every other slide: it inherits the ruling and the margin
+   line from .slide, so the deck opens as one continuous notebook. */
+.slide.cover { justify-content: center; }
 .slide.cover h1 { font-size: 82px; font-weight: 500; letter-spacing: -.025em; line-height: 1.02; }
 .slide.cover .role {
   font-family: var(--sans); font-size: 16px; font-weight: 600;
   letter-spacing: .22em; text-transform: uppercase;
-  color: #d9a2b0; margin-top: 22px;
+  color: var(--margin); margin-top: 22px;
 }
-.slide.cover .meta { font-size: 20px; color: rgba(244, 238, 240, .66); margin-top: 8px; }
-.slide.cover .rule {
-  width: 128px; height: 2px; margin: 34px 0;
-  background: rgba(244, 238, 240, .5);
-}
-.slide.cover .tagline { font-size: 27px; font-style: italic; color: rgba(244, 238, 240, .82); max-width: 30ch; }
+.slide.cover .meta { font-size: 20px; color: var(--ink-soft); margin-top: 8px; }
+.slide.cover .rule { width: 104px; height: 3px; margin: 34px 0; background: var(--margin); }
+.slide.cover .tagline { font-size: 27px; font-style: italic; color: var(--ink-soft); max-width: 30ch; }
 
 /* ---------- image slide ---------- */
 .slide.split { flex-direction: row; align-items: center; gap: 64px; }

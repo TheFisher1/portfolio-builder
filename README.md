@@ -34,7 +34,7 @@ The downloaded file carries its own source data in a `<script type="application/
 
 Not a developer portfolio: the visual language of a teacher's own materials. Ruled paper with a burgundy
 margin line, sections numbered like a syllabus, the portrait taped on at an angle, a highlighter
-stroke under the tagline. The slide cover is a deep aubergine board. Newsreader for text,
+stroke under the tagline. The deck opens on the same ruled sheet it continues on. Newsreader for text,
 Inter for labels, loaded from Google Fonts and falling back to Georgia and the system sans.
 
 ## Limits worth knowing
